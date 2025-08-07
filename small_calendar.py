@@ -9,6 +9,19 @@ import sys
 from datetime import datetime, date
 
 
+def create_day_box(day_type="regular"):
+    """Create a bordered box for a day based on its type."""
+    if day_type == "first_day":
+        # Bold/emphasized box for first day of month
+        return "┌─┐"
+    elif day_type == "today":
+        # Special box for today
+        return "┌─┐"
+    else:
+        # Regular box
+        return "┌─┐"
+
+
 def display_yearly_calendar(year):
     """Display a condensed yearly calendar with 7 rows (days of week) and actual number of weeks."""
     # Calculate the number of weeks properly
@@ -94,18 +107,26 @@ def display_yearly_calendar(year):
             
             week_num += 1
     
-    # Display the yearly calendar
+    # Display the yearly calendar with bordered boxes
     print(f"\n{year} ({num_weeks} weeks)")
-    print("=" * (num_weeks + 4))  # +4 for day names
     
-    # Print each day row
+    # Print top border
+    print("┌" + "─" * (num_weeks + 3) + "┐")
+    
+    # Print each day row with borders
     for i, day_name in enumerate(day_names):
-        row = f"{day_name} "
+        row = f"│{day_name}"
         for week in range(min(num_weeks, week_num)):
             row += yearly_grid[i][week]
+        row += "│"
         print(row)
+        
+        # Print separator line (except for last row)
+        if i < 6:
+            print("├" + "─" * (num_weeks + 3) + "┤")
     
-    print("=" * (num_weeks + 4))
+    # Print bottom border
+    print("└" + "─" * (num_weeks + 3) + "┘")
     print("Legend: █ = First day of month, ▓ = Today, ░ = Regular day")
 
 
@@ -116,9 +137,11 @@ def display_monthly_calendar(year, month):
     
     # Header
     print(f"\n{month_name} {year}")
-    print("=" * 30)
-    print("Sun  Mon  Tue  Wed  Thu  Fri  Sat")
-    print("-" * 30)
+    
+    # Print top border
+    print("┌─────┬─────┬─────┬─────┬─────┬─────┬─────┐")
+    print("│ Sun │ Mon │ Tue │ Wed │ Thu │ Fri │ Sat │")
+    print("├─────┼─────┼─────┼─────┼─────┼─────┼─────┤")
     
     # Get current date for highlighting
     today = date.today()
@@ -127,22 +150,27 @@ def display_monthly_calendar(year, month):
     current_day = today.day
     
     # Display calendar
-    for week in cal:
-        week_str = ""
+    for i, week in enumerate(cal):
+        week_str = "│"
         for day in week:
             if day == 0:
-                week_str += "     "
+                week_str += "     │"
             else:
                 # Highlight current date
                 if (year == current_year and 
                     month == current_month and 
                     day == current_day):
-                    week_str += f"[{day:2d}] "
+                    week_str += f" [{day:2d}] │"
                 else:
-                    week_str += f" {day:2d}  "
-        print(week_str.rstrip())
+                    week_str += f"  {day:2d} │"
+        print(week_str)
+        
+        # Print separator line (except for last week)
+        if i < len(cal) - 1:
+            print("├─────┼─────┼─────┼─────┼─────┼─────┼─────┤")
     
-    print("-" * 30)
+    # Print bottom border
+    print("└─────┴─────┴─────┴─────┴─────┴─────┴─────┘")
 
 
 def main():
