@@ -78,6 +78,82 @@ def display_yearly_calendar(year):
     # print(f"Legend: {first_day} = First day of month, {today_char} = Today, {regular_day} = Regular day")
 
 
+def display_multiple_years_side_by_side(years):
+    """Display multiple years side by side with year names above January columns."""
+    if not years:
+        return
+    
+    # Get current date for highlighting
+    today_date = date.today()
+    current_year = today_date.year
+    current_month = today_date.month
+    current_day = today_date.day
+    
+    # Initialize data structure for all years
+    all_years_data = {}
+    cal = calendar.Calendar()
+    cal.firstweekday = 6  # Sunday first
+    
+    # Process each year
+    for year in years:
+        weekdays = [[] for _ in range(7)]
+        first_day = ['X','J','F','M','A','M','J','J','A','S','O','N','D']
+        today_char, regular_day = '.', '.'
+        
+        for m in range(1, 13):
+            for (y, m2, dm, dw) in cal.itermonthdays4(year, m):
+                if m2 != m:
+                    continue
+                v = (today_char if (y == current_year and m == current_month and dm == current_day)
+                     else first_day[m2] if dm == 1
+                     else regular_day)
+                weekdays[(dw + 1) % 7].append(v)  # shift by 1 to make Sunday first
+        
+        # Pad weeks to uniform length
+        max_weeks = max(len(row) for row in weekdays)
+        for dw in range(7):
+            # Add spaces at beginning if needed
+            if weekdays[dw][0] in first_day:
+                weekdays[dw].insert(0, ' ')
+            # Pad to uniform length
+            while len(weekdays[dw]) < max_weeks:
+                weekdays[dw].append(' ')
+        
+        all_years_data[year] = weekdays
+    
+    # Day names
+    day_names = ['S', 'M', 'T', 'W', 'T', 'F', 'S']
+    
+    # Calculate the width of each year's data for proper alignment
+    year_width = len(all_years_data[years[0]][0]) if years else 52
+    
+    # Print year headers - align with the start of each year's data
+    year_header = "   "  # Space for day name column
+    for year in years:
+        # Find the position of January (J) in the first row to align the year name
+        first_row = all_years_data[year][0]
+        jan_pos = -1
+        for i, char in enumerate(first_row):
+            if char == 'J':
+                jan_pos = i
+                break
+        
+        if jan_pos >= 0:
+            # Align year name with January
+            year_header += " " * jan_pos + str(year)
+        else:
+            # Fallback alignment
+            year_header += f"{year:>52}"
+    print(year_header)
+    
+    # Print each day row across all years
+    for i, day_name in enumerate(day_names):
+        row = f"{day_name} "
+        for year in years:
+            row += ''.join(all_years_data[year][i])
+        print(row)
+
+
 def display_monthly_calendar(year, month):
     """Display a formatted calendar for the specified month and year."""
     cal = calendar.monthcalendar(year, month)
@@ -167,9 +243,7 @@ def main():
     if args.years is not None:
         # Show multiple years
         years = parse_years_range(args.years)
-        for year in years:
-            display_yearly_calendar(year)
-            print()  # Add spacing between years
+        display_multiple_years_side_by_side(years)
     elif args.number is not None:
         # Show specified number of years
         if args.year is not None:
@@ -178,9 +252,7 @@ def main():
             start_year = now.year
         
         years = list(range(start_year, start_year + args.number))
-        for year in years:
-            display_yearly_calendar(year)
-            print()  # Add spacing between years
+        display_multiple_years_side_by_side(years)
     elif args.month is not None:
         # Show specific month
         year = args.year if args.year is not None else now.year
@@ -199,11 +271,6 @@ def main():
         # Default: show yearly view for current year
         year = now.year
         display_yearly_calendar(year)
-    
-    # Validate year (reasonable range)
-    if 'year' in locals() and year < 1900 or year > 2100:
-        print("Error: Year must be between 1900 and 2100")
-        sys.exit(1)
     
     try:
         # Display logic is handled above based on arguments
