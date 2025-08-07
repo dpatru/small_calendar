@@ -78,59 +78,10 @@ def display_yearly_calendar(year, n=1):
     # print(f"Legend: {first_day} = First day of month, {today_char} = Today, {regular_day} = Regular day")
 
 
-def display_monthly_calendar(year, month):
-    """Display a formatted calendar for the specified month and year."""
-    cal = calendar.monthcalendar(year, month)
-    month_name = calendar.month_name[month]
-    
-    # Header
-    print(f"\n{month_name} {year}")
-    
-    # Print top border
-    print("┌─────┬─────┬─────┬─────┬─────┬─────┬─────┐")
-    print("│ Sun │ Mon │ Tue │ Wed │ Thu │ Fri │ Sat │")
-    print("├─────┼─────┼─────┼─────┼─────┼─────┼─────┤")
-    
-    # Get current date for highlighting
-    today = date.today()
-    current_year = today.year
-    current_month = today.month
-    current_day = today.day
-    
-    # Display calendar
-    for i, week in enumerate(cal):
-        week_str = "│"
-        for day in week:
-            if day == 0:
-                week_str += "     │"
-            else:
-                # Highlight current date
-                if (year == current_year and 
-                    month == current_month and 
-                    day == current_day):
-                    week_str += f" [{day:2d}] │"
-                else:
-                    week_str += f"  {day:2d} │"
-        print(week_str)
-        
-        # Print separator line (except for last week)
-        if i < len(cal) - 1:
-            print("├─────┼─────┼─────┼─────┼─────┼─────┼─────┤")
-    
-    # Print bottom border
-    print("└─────┴─────┴─────┴─────┴─────┴─────┴─────┘")
-
-
 def main():
     """Main function to handle command-line arguments and display calendar."""
     parser = argparse.ArgumentParser(
-        description="Display a simple calendar for a specific month and year"
-    )
-    parser.add_argument(
-        "--month", "-m",
-        type=int,
-        help="Month (1-12)",
-        choices=range(1, 13)
+        description="Display a simple calendar for a specific year or range of years"
     )
     parser.add_argument(
         "--year", "-y",
@@ -150,12 +101,12 @@ def main():
     parser.add_argument(
         "--current", "-c",
         action="store_true",
-        help="Show current month (default)"
+        help="Show current year (default)"
     )
     parser.add_argument(
         "--yearly",
         action="store_true",
-        help="Show yearly view (default when no month specified)"
+        help="Show yearly view (default)"
     )
     
     args = parser.parse_args()
@@ -177,20 +128,14 @@ def main():
             start_year = now.year
         
         display_yearly_calendar(start_year, args.number)
-    elif args.month is not None:
-        # Show specific month
-        year = args.year if args.year is not None else now.year
-        month = args.month
-        display_monthly_calendar(year, month)
-    elif args.year is not None and args.month is None:
+    elif args.year is not None:
         # Show yearly view for specific year
         year = args.year
         display_yearly_calendar(year, 1)
     elif args.current:
-        # Show current month
+        # Show current year
         year = now.year
-        month = now.month
-        display_monthly_calendar(year, month)
+        display_yearly_calendar(year, 1)
     else:
         # Default: show yearly view for current year
         year = now.year
