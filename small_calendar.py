@@ -11,9 +11,9 @@ from datetime import datetime, date
 
 def display_yearly_calendar(year):
     """Display a condensed yearly calendar with 7 rows (days of week) and actual number of weeks."""
-    # Calculate the number of weeks using the simple formula
-    # For a leap year that starts on Saturday: ((365+1)-1)/7 + 1 = 53 weeks
-    # For regular years, we need to check if it's a leap year and how it starts
+    # Calculate the number of weeks properly
+    # 52 full weeks = 364 days
+    # Remaining days determine if we have 52, 53, or 54 weeks
     
     # Check if it's a leap year
     is_leap = calendar.isleap(year)
@@ -23,16 +23,26 @@ def display_yearly_calendar(year):
     # Convert to Sunday-based (0=Sunday, 1=Monday, ..., 6=Saturday)
     jan1_sunday_based = (jan1_weekday + 1) % 7
     
-    # Calculate weeks based on the formula
+    # Calculate weeks based on the correct logic
     if is_leap:
-        # Leap year: ((365+1)-1)/7 + 1 = 53 weeks
-        num_weeks = 53
-    else:
-        # Regular year: depends on how it starts
-        # If it starts on Saturday (6) and is not a leap year, it has 53 weeks
+        # Leap year: 366 days
+        # 52 full weeks = 364 days
+        # Remaining 2 days
         if jan1_sunday_based == 6:  # Saturday
+            # Starts Saturday, ends Sunday = 54 weeks (1 + 52 + 1)
+            num_weeks = 54
+        else:
+            # Starts other day, ends other day = 53 weeks
+            num_weeks = 53
+    else:
+        # Regular year: 365 days
+        # 52 full weeks = 364 days
+        # Remaining 1 day
+        if jan1_sunday_based == 6:  # Saturday
+            # Starts Saturday, ends Saturday = 53 weeks (1 + 52)
             num_weeks = 53
         else:
+            # Starts other day, ends other day = 52 weeks
             num_weeks = 52
     
     # Initialize the yearly grid: 7 rows (days of week) x actual weeks
