@@ -1,0 +1,93 @@
+#!/usr/bin/env python3
+"""
+Display all Unicode rectangle and box shapes
+"""
+
+print("=== UNICODE RECTANGLE AND BOX SHAPES ===\n")
+
+print("1. SOLID RECTANGLES:")
+print("█ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █")
+print("▓ ▓ ▓ ▓ ▓ ▓ ▓ ▓ ▓ ▓ ▓ ▓ ▓ ▓ ▓ ▓ ▓ ▓ ▓ ▓")
+print("▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒ ▒")
+print("░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░\n")
+
+print("2. OUTLINE RECTANGLES:")
+print("■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■")
+print("□ □ □ □ □ □ □ □ □ □ □ □ □ □ □ □ □ □ □ □")
+print("▢ ▢ ▢ ▢ ▢ ▢ ▢ ▢ ▢ ▢ ▢ ▢ ▢ ▢ ▢ ▢ ▢ ▢ ▢ ▢")
+print("▣ ▣ ▣ ▣ ▣ ▣ ▣ ▣ ▣ ▣ ▣ ▣ ▣ ▣ ▣ ▣ ▣ ▣ ▣ ▣\n")
+
+print("3. SHADED RECTANGLES:")
+print("▤ ▤ ▤ ▤ ▤ ▤ ▤ ▤ ▤ ▤ ▤ ▤ ▤ ▤ ▤ ▤ ▤ ▤ ▤ ▤")
+print("▥ ▥ ▥ ▥ ▥ ▥ ▥ ▥ ▥ ▥ ▥ ▥ ▥ ▥ ▥ ▥ ▥ ▥ ▥ ▥")
+print("▦ ▦ ▦ ▦ ▦ ▦ ▦ ▦ ▦ ▦ ▦ ▦ ▦ ▦ ▦ ▦ ▦ ▦ ▦ ▦")
+print("▧ ▧ ▧ ▧ ▧ ▧ ▧ ▧ ▧ ▧ ▧ ▧ ▧ ▧ ▧ ▧ ▧ ▧ ▧ ▧")
+print("▨ ▨ ▨ ▨ ▨ ▨ ▨ ▨ ▨ ▨ ▨ ▨ ▨ ▨ ▨ ▨ ▨ ▨ ▨ ▨")
+print("▩ ▩ ▩ ▩ ▩ ▩ ▩ ▩ ▩ ▩ ▩ ▩ ▩ ▩ ▩ ▩ ▩ ▩ ▩ ▩\n")
+
+print("4. SMALL RECTANGLES:")
+print("▪ ▪ ▪ ▪ ▪ ▪ ▪ ▪ ▪ ▪ ▪ ▪ ▪ ▪ ▪ ▪ ▪ ▪ ▪ ▪")
+print("▫ ▫ ▫ ▫ ▫ ▫ ▫ ▫ ▫ ▫ ▫ ▫ ▫ ▫ ▫ ▫ ▫ ▫ ▫ ▫\n")
+
+print("5. HORIZONTAL RECTANGLES:")
+print("▬ ▬ ▬ ▬ ▬ ▬ ▬ ▬ ▬ ▬ ▬ ▬ ▬ ▬ ▬ ▬ ▬ ▬ ▬ ▬")
+print("▭ ▭ ▭ ▭ ▭ ▭ ▭ ▭ ▭ ▭ ▭ ▭ ▭ ▭ ▭ ▭ ▭ ▭ ▭ ▭")
+print("▮ ▮ ▮ ▮ ▮ ▮ ▮ ▮ ▮ ▮ ▮ ▮ ▮ ▮ ▮ ▮ ▮ ▮ ▮ ▮")
+print("▯ ▯ ▯ ▯ ▯ ▯ ▯ ▯ ▯ ▯ ▯ ▯ ▯ ▯ ▯ ▯ ▯ ▯ ▯ ▯\n")
+
+print("6. VERTICAL RECTANGLES:")
+print("▰ ▰ ▰ ▰ ▰ ▰ ▰ ▰ ▰ ▰ ▰ ▰ ▰ ▰ ▰ ▰ ▰ ▰ ▰ ▰")
+print("▱ ▱ ▱ ▱ ▱ ▱ ▱ ▱ ▱ ▱ ▱ ▱ ▱ ▱ ▱ ▱ ▱ ▱ ▱ ▱\n")
+
+print("7. GEOMETRIC SHAPES:")
+print("● ● ● ● ● ● ● ● ● ● ● ● ● ● ● ● ● ● ● ●")
+print("○ ○ ○ ○ ○ ○ ○ ○ ○ ○ ○ ○ ○ ○ ○ ○ ○ ○ ○ ○")
+print("◐ ◐ ◐ ◐ ◐ ◐ ◐ ◐ ◐ ◐ ◐ ◐ ◐ ◐ ◐ ◐ ◐ ◐ ◐ ◐")
+print("◑ ◑ ◑ ◑ ◑ ◑ ◑ ◑ ◑ ◑ ◑ ◑ ◑ ◑ ◑ ◑ ◑ ◑ ◑ ◑")
+print("◒ ◒ ◒ ◒ ◒ ◒ ◒ ◒ ◒ ◒ ◒ ◒ ◒ ◒ ◒ ◒ ◒ ◒ ◒ ◒")
+print("◓ ◓ ◓ ◓ ◓ ◓ ◓ ◓ ◓ ◓ ◓ ◓ ◓ ◓ ◓ ◓ ◓ ◓ ◓ ◓\n")
+
+print("8. MATHEMATICAL SYMBOLS:")
+print("• • • • • • • • • • • • • • • • • • • •")
+print("◦ ◦ ◦ ◦ ◦ ◦ ◦ ◦ ◦ ◦ ◦ ◦ ◦ ◦ ◦ ◦ ◦ ◦ ◦ ◦")
+print("◯ ◯ ◯ ◯ ◯ ◯ ◯ ◯ ◯ ◯ ◯ ◯ ◯ ◯ ◯ ◯ ◯ ◯ ◯ ◯")
+print("◉ ◉ ◉ ◉ ◉ ◉ ◉ ◉ ◉ ◉ ◉ ◉ ◉ ◉ ◉ ◉ ◉ ◉ ◉ ◉")
+print("◎ ◎ ◎ ◎ ◎ ◎ ◎ ◎ ◎ ◎ ◎ ◎ ◎ ◎ ◎ ◎ ◎ ◎ ◎ ◎\n")
+
+print("9. DICE AND GAME SYMBOLS:")
+print("⚀ ⚀ ⚀ ⚀ ⚀ ⚀ ⚀ ⚀ ⚀ ⚀ ⚀ ⚀ ⚀ ⚀ ⚀ ⚀ ⚀ ⚀ ⚀")
+print("⚁ ⚁ ⚁ ⚁ ⚁ ⚁ ⚁ ⚁ ⚁ ⚁ ⚁ ⚁ ⚁ ⚁ ⚁ ⚁ ⚁ ⚁ ⚁")
+print("⚂ ⚂ ⚂ ⚂ ⚂ ⚂ ⚂ ⚂ ⚂ ⚂ ⚂ ⚂ ⚂ ⚂ ⚂ ⚂ ⚂ ⚂ ⚂")
+print("⚃ ⚃ ⚃ ⚃ ⚃ ⚃ ⚃ ⚃ ⚃ ⚃ ⚃ ⚃ ⚃ ⚃ ⚃ ⚃ ⚃ ⚃ ⚃")
+print("⚄ ⚄ ⚄ ⚄ ⚄ ⚄ ⚄ ⚄ ⚄ ⚄ ⚄ ⚄ ⚄ ⚄ ⚄ ⚄ ⚄ ⚄ ⚄")
+print("⚅ ⚅ ⚅ ⚅ ⚅ ⚅ ⚅ ⚅ ⚅ ⚅ ⚅ ⚅ ⚅ ⚅ ⚅ ⚅ ⚅ ⚅ ⚅\n")
+
+print("10. ARROW AND DIRECTIONAL SHAPES:")
+print("▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲")
+print("△ △ △ △ △ △ △ △ △ △ △ △ △ △ △ △ △ △ △ △")
+print("▴ ▴ ▴ ▴ ▴ ▴ ▴ ▴ ▴ ▴ ▴ ▴ ▴ ▴ ▴ ▴ ▴ ▴ ▴ ▴")
+print("▵ ▵ ▵ ▵ ▵ ▵ ▵ ▵ ▵ ▵ ▵ ▵ ▵ ▵ ▵ ▵ ▵ ▵ ▵ ▵")
+print("▶ ▶ ▶ ▶ ▶ ▶ ▶ ▶ ▶ ▶ ▶ ▶ ▶ ▶ ▶ ▶ ▶ ▶ ▶ ▶")
+print("▷ ▷ ▷ ▷ ▷ ▷ ▷ ▷ ▷ ▷ ▷ ▷ ▷ ▷ ▷ ▷ ▷ ▷ ▷ ▷")
+print("▸ ▸ ▸ ▸ ▸ ▸ ▸ ▸ ▸ ▸ ▸ ▸ ▸ ▸ ▸ ▸ ▸ ▸ ▸ ▸")
+print("▹ ▹ ▹ ▹ ▹ ▹ ▹ ▹ ▹ ▹ ▹ ▹ ▹ ▹ ▹ ▹ ▹ ▹ ▹ ▹")
+print("► ► ► ► ► ► ► ► ► ► ► ► ► ► ► ► ► ► ► ►")
+print("▻ ▻ ▻ ▻ ▻ ▻ ▻ ▻ ▻ ▻ ▻ ▻ ▻ ▻ ▻ ▻ ▻ ▻ ▻ ▻")
+print("▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼")
+print("▽ ▽ ▽ ▽ ▽ ▽ ▽ ▽ ▽ ▽ ▽ ▽ ▽ ▽ ▽ ▽ ▽ ▽ ▽ ▽")
+print("▾ ▾ ▾ ▾ ▾ ▾ ▾ ▾ ▾ ▾ ▾ ▾ ▾ ▾ ▾ ▾ ▾ ▾ ▾ ▾")
+print("▿ ▿ ▿ ▿ ▿ ▿ ▿ ▿ ▿ ▿ ▿ ▿ ▿ ▿ ▿ ▿ ▿ ▿ ▿ ▿\n")
+
+print("11. MINIMAL DOTS:")
+print("· · · · · · · · · · · · · · · · · · · ·")
+print("· · · · · · · · · · · · · · · · · · · ·")
+print("· · · · · · · · · · · · · · · · · · · ·\n")
+
+print("=== RECOMMENDATIONS FOR CALENDAR DAYS ===")
+print("• Solid blocks (█▓▒░): Good contrast, current choice")
+print("• Outline boxes (■□▢▣): Clean, professional")
+print("• Shaded patterns (▤▥▦▧▨▩): Visual variety")
+print("• Geometric shapes (●○◐◑): Modern, aesthetic")
+print("• Dice symbols (⚀⚁⚂⚃⚄⚅): Fun, distinctive")
+print("• Minimal dots (····): Clean, simple")
+print("• Directional arrows (▲▶▼◀): Good for navigation")
