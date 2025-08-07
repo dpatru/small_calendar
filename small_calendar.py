@@ -18,8 +18,10 @@ def display_yearly_calendar(year):
     # Check if it's a leap year
     is_leap = calendar.isleap(year)
     
-    # Get the day of week for January 1st (0=Monday, 6=Sunday)
+    # Get the day of week for January 1st (6=Sunday, 0=Monday, 6=Sunday)
     jan1_weekday = date(year, 1, 1).weekday()
+    # Convert to Sunday-based (0=Sunday, 1=Monday, ..., 6=Saturday)
+    jan1_sunday_based = (jan1_weekday + 1) % 7
     
     # Calculate weeks based on the formula
     if is_leap:
@@ -27,8 +29,8 @@ def display_yearly_calendar(year):
         num_weeks = 53
     else:
         # Regular year: depends on how it starts
-        # If it starts on Saturday (5) and is not a leap year, it has 53 weeks
-        if jan1_weekday == 5:  # Saturday
+        # If it starts on Saturday (6) and is not a leap year, it has 53 weeks
+        if jan1_sunday_based == 6:  # Saturday
             num_weeks = 53
         else:
             num_weeks = 52
@@ -36,8 +38,8 @@ def display_yearly_calendar(year):
     # Initialize the yearly grid: 7 rows (days of week) x actual weeks
     yearly_grid = [[' ' for _ in range(num_weeks)] for _ in range(7)]
     
-    # Day names for the first column
-    day_names = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+    # Day names for the first column (Sunday first)
+    day_names = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
     
     # Get current date for highlighting
     today = date.today()
@@ -49,6 +51,7 @@ def display_yearly_calendar(year):
     
     # Fill the grid with all days of the year
     for month in range(1, 13):
+        # Use Sunday as first day of week
         cal = calendar.monthcalendar(year, month)
         
         for week in cal:
@@ -104,7 +107,7 @@ def display_monthly_calendar(year, month):
     # Header
     print(f"\n{month_name} {year}")
     print("=" * 30)
-    print("Mon  Tue  Wed  Thu  Fri  Sat  Sun")
+    print("Sun  Mon  Tue  Wed  Thu  Fri  Sat")
     print("-" * 30)
     
     # Get current date for highlighting
