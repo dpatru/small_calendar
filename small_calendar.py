@@ -24,109 +24,50 @@ def create_day_box(day_type="regular"):
 
 def display_yearly_calendar(year):
     """Display a condensed yearly calendar with 7 rows (days of week) and actual number of weeks."""
-    # Calculate the number of weeks properly
-    # 52 full weeks = 364 days
-    # Remaining days determine if we have 52, 53, or 54 weeks
+    weekdays = [[] for _ in range(8)]
+    first_day, today_char, regular_day = ('█', '▓', '░')
+    # Get current date for highlighting
+    today_date = date.today()
+    current_year = today_date.year
+    current_month = today_date.month
+    current_day = today_date.day
+    week_num = 0
     
-    # Check if it's a leap year
-    is_leap = calendar.isleap(year)
-    
-    # Get the day of week for January 1st (6=Sunday, 0=Monday, 6=Sunday)
-    jan1_weekday = date(year, 1, 1).weekday()
-    # Convert to Sunday-based (0=Sunday, 1=Monday, ..., 6=Saturday)
-    jan1_sunday_based = (jan1_weekday + 1) % 7
-    
-    # Calculate weeks based on the correct logic
-    if is_leap:
-        # Leap year: 366 days
-        # 52 full weeks = 364 days
-        # Remaining 2 days
-        if jan1_sunday_based == 6:  # Saturday
-            # Starts Saturday, ends Sunday = 54 weeks (1 + 52 + 1)
-            num_weeks = 54
-        else:
-            # Starts other day, ends other day = 53 weeks
-            num_weeks = 53
-    else:
-        # Regular year: 365 days
-        # 52 full weeks = 364 days
-        # Remaining 1 day
-        if jan1_sunday_based == 6:  # Saturday
-            # Starts Saturday, ends Saturday = 53 weeks (1 + 52)
-            num_weeks = 53
-        else:
-            # Starts other day, ends other day = 52 weeks
-            num_weeks = 52
-    
-    # Initialize the yearly grid: 7 rows (days of week) x actual weeks
-    yearly_grid = [[' ' for _ in range(num_weeks)] for _ in range(7)]
-    
+    for m in range(1,13):
+        for (y,m2,dm,dw) in calendar.Calendar().itermonthdays4(year, m):
+            v = (today_char if (y==current_year and m==current_month and dm==current_day) \
+                 else first_day if dm==1 \
+                 else regular_day)
+            if dm == 1: week_num += 1
+            weekdays[(dw+1)%7].append(v) # shift by 1 to make Sunday the first day of the week
+    # add empty days to the beginning of the week if the first day is not Sunday
+    for dw in range(7):
+        if weekdays[dw][0] == first_day: 
+            break
+        else: 
+            weekdays[dw].insert(0, ' ')
+
     # Day names for the first column (Sunday first)
     day_names = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
     
-    # Get current date for highlighting
-    today = date.today()
-    current_year = today.year
-    current_month = today.month
-    current_day = today.day
-    
-    week_num = 0
-    
-    # Fill the grid with all days of the year
-    for month in range(1, 13):
-        # Use Sunday as first day of week
-        cal = calendar.monthcalendar(year, month)
-        
-        for week in cal:
-            if week_num >= num_weeks:  # Safety check
-                break
-                
-            for day_of_week in range(7):
-                day = week[day_of_week]
-                if day != 0:
-                    # Check if this is the first day of a month
-                    is_first_day = (day == 1)
-                    
-                    # Check if this is today
-                    is_today = (year == current_year and 
-                               month == current_month and 
-                               day == current_day)
-                    
-                    # Create the box character
-                    if is_first_day:
-                        # Bold/emphasized box for first day of month
-                        box = '█'
-                    elif is_today:
-                        # Special box for today
-                        box = '▓'
-                    else:
-                        # Regular box
-                        box = '░'
-                    
-                    yearly_grid[day_of_week][week_num] = box
-            
-            week_num += 1
     
     # Display the yearly calendar with bordered boxes
-    print(f"\n{year} ({num_weeks} weeks)")
+    print(f"\n{year} ({week_num} weeks)")
     
     # Print top border
-    print("┌" + "─" * (num_weeks + 3) + "┐")
+    print("┌" + "─" * (week_num + 3) + "┐")
     
     # Print each day row with borders
     for i, day_name in enumerate(day_names):
-        row = f"│{day_name}"
-        for week in range(min(num_weeks, week_num)):
-            row += yearly_grid[i][week]
-        row += "│"
+        row = f"│{day_name} {''.join(weekdays[i])}│"
         print(row)
         
         # Print separator line (except for last row)
         if i < 6:
-            print("├" + "─" * (num_weeks + 3) + "┤")
+            print("├" + "─" * (week_num + 3) + "┤")
     
     # Print bottom border
-    print("└" + "─" * (num_weeks + 3) + "┘")
+    print("└" + "─" * (week_num + 3) + "┘")
     print("Legend: █ = First day of month, ▓ = Today, ░ = Regular day")
 
 
