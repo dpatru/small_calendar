@@ -143,6 +143,11 @@ def main():
         help="Range of years (e.g., '2020-2025' or '2020,2022,2024')"
     )
     parser.add_argument(
+        "--number", "-n",
+        type=int,
+        help="Number of years to display (use with --year to specify start year)"
+    )
+    parser.add_argument(
         "--current", "-c",
         action="store_true",
         help="Show current month (default)"
@@ -162,6 +167,17 @@ def main():
     if args.years is not None:
         # Show multiple years
         years = parse_years_range(args.years)
+        for year in years:
+            display_yearly_calendar(year)
+            print()  # Add spacing between years
+    elif args.number is not None:
+        # Show specified number of years
+        if args.year is not None:
+            start_year = args.year
+        else:
+            start_year = now.year
+        
+        years = list(range(start_year, start_year + args.number))
         for year in years:
             display_yearly_calendar(year)
             print()  # Add spacing between years
