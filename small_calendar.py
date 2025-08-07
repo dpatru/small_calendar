@@ -138,12 +138,17 @@ def main():
         help="Year (e.g., 2024)"
     )
     parser.add_argument(
+        "--years", "-Y",
+        type=str,
+        help="Range of years (e.g., '2020-2025' or '2020,2022,2024')"
+    )
+    parser.add_argument(
         "--current", "-c",
         action="store_true",
         help="Show current month (default)"
     )
     parser.add_argument(
-        "--yearly", "-Y",
+        "--yearly",
         action="store_true",
         help="Show yearly view (default when no month specified)"
     )
@@ -154,7 +159,13 @@ def main():
     now = datetime.now()
     
     # Determine what to display
-    if args.month is not None:
+    if args.years is not None:
+        # Show multiple years
+        years = parse_years_range(args.years)
+        for year in years:
+            display_yearly_calendar(year)
+            print()  # Add spacing between years
+    elif args.month is not None:
         # Show specific month
         year = args.year if args.year is not None else now.year
         month = args.month
@@ -174,7 +185,7 @@ def main():
         display_yearly_calendar(year)
     
     # Validate year (reasonable range)
-    if year < 1900 or year > 2100:
+    if 'year' in locals() and year < 1900 or year > 2100:
         print("Error: Year must be between 1900 and 2100")
         sys.exit(1)
     
@@ -184,6 +195,60 @@ def main():
     except Exception as e:
         print(f"Error displaying calendar: {e}")
         sys.exit(1)
+
+
+def parse_years_range(years_str):
+    """Parse a string of years into a list of years."""
+    years = []
+    
+    # Handle comma-separated years
+    if ',' in years_str:
+        for year_str in years_str.split(','):
+            year_str = year_str.strip()
+            if '-' in year_str:
+                # Handle ranges within comma-separated list
+                years.extend(parse_years_range(year_str))
+            else:
+                try:
+                    year = int(year_str)
+                    if 1900 <= year <= 2100:
+                        years.append(year)
+                    else:
+                        print(f"Warning: Year {year} is out of range (1900-2100)")
+                except ValueError:
+                    print(f"Warning: Invalid year '{year_str}'")
+    
+    # Handle year ranges (e.g., "2020-2025")
+    elif '-' in years_str:
+        try:
+            start_str, end_str = years_str.split('-', 1)
+            start_year = int(start_str.strip())
+            end_year = int(end_str.strip())
+            
+            if start_year > end_year:
+                start_year, end_year = end_year, start_year
+            
+            if start_year < 1900 or end_year > 2100:
+                print("Warning: Some years are out of range (1900-2100)")
+            
+            for year in range(start_year, end_year + 1):
+                if 1900 <= year <= 2100:
+                    years.append(year)
+        except ValueError:
+            print(f"Error: Invalid year range '{years_str}'")
+    
+    # Handle single year
+    else:
+        try:
+            year = int(years_str)
+            if 1900 <= year <= 2100:
+                years.append(year)
+            else:
+                print(f"Warning: Year {year} is out of range (1900-2100)")
+        except ValueError:
+            print(f"Error: Invalid year '{years_str}'")
+    
+    return years
 
 
 if __name__ == "__main__":
