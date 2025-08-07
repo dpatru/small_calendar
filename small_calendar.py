@@ -74,7 +74,7 @@ def display_yearly_calendar(year):
     
     # Print bottom border
     print("└" + "─" * (week_num + 4) + "┘")
-    print("Legend: █ = First day of month, ▓ = Today, ░ = Regular day")
+    print(f"Legend: {first_day} = First day of month, {today_char} = Today, {regular_day} = Regular day")
 
 
 def display_monthly_calendar(year, month):
