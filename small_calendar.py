@@ -10,9 +10,31 @@ from datetime import datetime, date
 
 
 def display_yearly_calendar(year):
-    """Display a condensed yearly calendar with 7 rows (days of week) and 52 columns (weeks)."""
-    # Initialize the yearly grid: 7 rows (days of week) x 53 weeks (max possible)
-    yearly_grid = [[' ' for _ in range(53)] for _ in range(7)]
+    """Display a condensed yearly calendar with 7 rows (days of week) and actual number of weeks."""
+    # Calculate the actual number of weeks in the year
+    # Get the last day of the year
+    last_day = date(year, 12, 31)
+    # Get the first day of the year
+    first_day = date(year, 1, 1)
+    
+    # Calculate weeks using ISO calendar (Monday as first day of week)
+    # Get the ISO week number of the last day
+    last_week = last_day.isocalendar()[1]
+    first_week = first_day.isocalendar()[1]
+    
+    # Handle year boundary cases
+    if first_week > 50:  # First week belongs to previous year
+        num_weeks = last_week
+    elif last_week < 10:  # Last week belongs to next year
+        num_weeks = 52 - first_week + 1
+    else:
+        num_weeks = last_week
+    
+    # Ensure we have at least 52 weeks and at most 53
+    num_weeks = max(52, min(53, num_weeks))
+    
+    # Initialize the yearly grid: 7 rows (days of week) x actual weeks
+    yearly_grid = [[' ' for _ in range(num_weeks)] for _ in range(7)]
     
     # Day names for the first column
     day_names = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
@@ -30,7 +52,7 @@ def display_yearly_calendar(year):
         cal = calendar.monthcalendar(year, month)
         
         for week in cal:
-            if week_num >= 53:  # Safety check
+            if week_num >= num_weeks:  # Safety check
                 break
                 
             for day_of_week in range(7):
@@ -60,17 +82,17 @@ def display_yearly_calendar(year):
             week_num += 1
     
     # Display the yearly calendar
-    print(f"\n{year}")
-    print("=" * 53)
+    print(f"\n{year} ({num_weeks} weeks)")
+    print("=" * (num_weeks + 4))  # +4 for day names
     
     # Print each day row
     for i, day_name in enumerate(day_names):
         row = f"{day_name} "
-        for week in range(min(53, week_num)):
+        for week in range(min(num_weeks, week_num)):
             row += yearly_grid[i][week]
         print(row)
     
-    print("=" * 53)
+    print("=" * (num_weeks + 4))
     print("Legend: █ = First day of month, ▓ = Today, ░ = Regular day")
 
 
