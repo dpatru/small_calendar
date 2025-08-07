@@ -11,27 +11,27 @@ from datetime import datetime, date
 
 def display_yearly_calendar(year):
     """Display a condensed yearly calendar with 7 rows (days of week) and actual number of weeks."""
-    # Calculate the actual number of weeks in the year
-    # Get the last day of the year
-    last_day = date(year, 12, 31)
-    # Get the first day of the year
-    first_day = date(year, 1, 1)
+    # Calculate the number of weeks using the simple formula
+    # For a leap year that starts on Saturday: ((365+1)-1)/7 + 1 = 53 weeks
+    # For regular years, we need to check if it's a leap year and how it starts
     
-    # Calculate weeks using ISO calendar (Monday as first day of week)
-    # Get the ISO week number of the last day
-    last_week = last_day.isocalendar()[1]
-    first_week = first_day.isocalendar()[1]
+    # Check if it's a leap year
+    is_leap = calendar.isleap(year)
     
-    # Handle year boundary cases
-    if first_week > 50:  # First week belongs to previous year
-        num_weeks = last_week
-    elif last_week < 10:  # Last week belongs to next year
-        num_weeks = 52 - first_week + 1
+    # Get the day of week for January 1st (0=Monday, 6=Sunday)
+    jan1_weekday = date(year, 1, 1).weekday()
+    
+    # Calculate weeks based on the formula
+    if is_leap:
+        # Leap year: ((365+1)-1)/7 + 1 = 53 weeks
+        num_weeks = 53
     else:
-        num_weeks = last_week
-    
-    # Ensure we have at least 52 weeks and at most 53
-    num_weeks = max(52, min(53, num_weeks))
+        # Regular year: depends on how it starts
+        # If it starts on Saturday (5) and is not a leap year, it has 53 weeks
+        if jan1_weekday == 5:  # Saturday
+            num_weeks = 53
+        else:
+            num_weeks = 52
     
     # Initialize the yearly grid: 7 rows (days of week) x actual weeks
     yearly_grid = [[' ' for _ in range(num_weeks)] for _ in range(7)]
