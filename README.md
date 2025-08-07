@@ -4,9 +4,10 @@ A simple command-line calendar tool written in Python.
 
 ## Features
 
+- Display yearly calendar view (default) - shows entire year in condensed format
 - Display monthly calendar view
 - Navigate between months and years
-- Highlight current date
+- Highlight current date and first day of each month
 - Simple and clean interface
 
 ## Installation
@@ -20,32 +21,40 @@ pip install -r requirements.txt
 ## Usage
 
 ```bash
+# Show yearly view (default)
 python3 small_calendar.py
-```
 
-Or with specific month/year:
+# Show specific year
+python3 small_calendar.py --year 2024
 
-```bash
+# Show specific month
 python3 small_calendar.py --month 12 --year 2024
+
+# Show current month
+python3 small_calendar.py --current
 ```
 
 ## Options
 
-- `--month`: Specify month (1-12)
-- `--year`: Specify year
-- `--current`: Show current month (default)
+- `--year`: Specify year for yearly view
+- `--month`: Specify month (1-12) for monthly view
+- `--current`: Show current month
+- `--yearly`: Show yearly view (default when no arguments provided)
 
 ## Examples
 
 ```bash
-# Show current month
+# Show yearly view for current year (default)
 python3 small_calendar.py
 
-# Show December 2024
+# Show yearly view for 2024
+python3 small_calendar.py --year 2024
+
+# Show December 2024 (monthly view)
 python3 small_calendar.py --month 12 --year 2024
 
-# Show March 2023
-python3 small_calendar.py --month 3 --year 2023
+# Show current month
+python3 small_calendar.py --current
 ```
 
 ## License

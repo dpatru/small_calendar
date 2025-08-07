@@ -9,7 +9,72 @@ import sys
 from datetime import datetime, date
 
 
-def display_calendar(year, month):
+def display_yearly_calendar(year):
+    """Display a condensed yearly calendar with 7 rows (days of week) and 52 columns (weeks)."""
+    # Initialize the yearly grid: 7 rows (days of week) x 53 weeks (max possible)
+    yearly_grid = [[' ' for _ in range(53)] for _ in range(7)]
+    
+    # Day names for the first column
+    day_names = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+    
+    # Get current date for highlighting
+    today = date.today()
+    current_year = today.year
+    current_month = today.month
+    current_day = today.day
+    
+    week_num = 0
+    
+    # Fill the grid with all days of the year
+    for month in range(1, 13):
+        cal = calendar.monthcalendar(year, month)
+        
+        for week in cal:
+            if week_num >= 53:  # Safety check
+                break
+                
+            for day_of_week in range(7):
+                day = week[day_of_week]
+                if day != 0:
+                    # Check if this is the first day of a month
+                    is_first_day = (day == 1)
+                    
+                    # Check if this is today
+                    is_today = (year == current_year and 
+                               month == current_month and 
+                               day == current_day)
+                    
+                    # Create the box character
+                    if is_first_day:
+                        # Bold/emphasized box for first day of month
+                        box = '█'
+                    elif is_today:
+                        # Special box for today
+                        box = '▓'
+                    else:
+                        # Regular box
+                        box = '░'
+                    
+                    yearly_grid[day_of_week][week_num] = box
+            
+            week_num += 1
+    
+    # Display the yearly calendar
+    print(f"\n{year}")
+    print("=" * 53)
+    
+    # Print each day row
+    for i, day_name in enumerate(day_names):
+        row = f"{day_name} "
+        for week in range(min(53, week_num)):
+            row += yearly_grid[i][week]
+        print(row)
+    
+    print("=" * 53)
+    print("Legend: █ = First day of month, ▓ = Today, ░ = Regular day")
+
+
+def display_monthly_calendar(year, month):
     """Display a formatted calendar for the specified month and year."""
     cal = calendar.monthcalendar(year, month)
     month_name = calendar.month_name[month]
@@ -66,20 +131,36 @@ def main():
         action="store_true",
         help="Show current month (default)"
     )
+    parser.add_argument(
+        "--yearly", "-Y",
+        action="store_true",
+        help="Show yearly view (default when no month specified)"
+    )
     
     args = parser.parse_args()
     
     # Get current date if no arguments provided
     now = datetime.now()
     
-    if args.current or (args.month is None and args.year is None):
+    # Determine what to display
+    if args.month is not None:
+        # Show specific month
+        year = args.year if args.year is not None else now.year
+        month = args.month
+        display_monthly_calendar(year, month)
+    elif args.year is not None and args.month is None:
+        # Show yearly view for specific year
+        year = args.year
+        display_yearly_calendar(year)
+    elif args.current:
         # Show current month
         year = now.year
         month = now.month
+        display_monthly_calendar(year, month)
     else:
-        # Use provided arguments, fallback to current for missing values
-        year = args.year if args.year is not None else now.year
-        month = args.month if args.month is not None else now.month
+        # Default: show yearly view for current year
+        year = now.year
+        display_yearly_calendar(year)
     
     # Validate year (reasonable range)
     if year < 1900 or year > 2100:
@@ -87,7 +168,8 @@ def main():
         sys.exit(1)
     
     try:
-        display_calendar(year, month)
+        # Display logic is handled above based on arguments
+        pass
     except Exception as e:
         print(f"Error displaying calendar: {e}")
         sys.exit(1)
