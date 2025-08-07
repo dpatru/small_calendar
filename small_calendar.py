@@ -25,20 +25,21 @@ def create_day_box(day_type="regular"):
 def display_yearly_calendar(year):
     """Display a condensed yearly calendar with 7 rows (days of week) and actual number of weeks."""
     weekdays = [[] for _ in range(8)]
-    first_day, today_char, regular_day = ('█', '▓', '░')
+    first_day, today_char, regular_day = ('█', '◎', '○') 
     # Get current date for highlighting
     today_date = date.today()
     current_year = today_date.year
     current_month = today_date.month
     current_day = today_date.day
-    week_num = 0
-    
+    cal = calendar.Calendar()
+    cal.firstweekday = 6
     for m in range(1,13):
-        for (y,m2,dm,dw) in calendar.Calendar().itermonthdays4(year, m):
+        for (y,m2,dm,dw) in cal.itermonthdays4(year, m):
+            if m2 != m: continue
+            # print(y,m2,dm,dw)
             v = (today_char if (y==current_year and m==current_month and dm==current_day) \
                  else first_day if dm==1 \
                  else regular_day)
-            if dm == 1: week_num += 1
             weekdays[(dw+1)%7].append(v) # shift by 1 to make Sunday the first day of the week
     # add empty days to the beginning of the week if the first day is not Sunday
     for dw in range(7):
@@ -46,16 +47,21 @@ def display_yearly_calendar(year):
             break
         else: 
             weekdays[dw].insert(0, ' ')
+    # add empty days to the end of the week if the last day is not Saturday
+    for dw in range(1,7):
+        if len(weekdays[dw]) < len(weekdays[0]):
+            weekdays[dw].append(' ')
+
 
     # Day names for the first column (Sunday first)
     day_names = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
     
-    
+    week_num = len(weekdays[0])
     # Display the yearly calendar with bordered boxes
     print(f"\n{year} ({week_num} weeks)")
     
     # Print top border
-    print("┌" + "─" * (week_num + 3) + "┐")
+    print("┌" + "─" * (week_num + 4) + "┐")
     
     # Print each day row with borders
     for i, day_name in enumerate(day_names):
@@ -64,10 +70,10 @@ def display_yearly_calendar(year):
         
         # Print separator line (except for last row)
         if i < 6:
-            print("├" + "─" * (week_num + 3) + "┤")
+            print("├" + "─" * (week_num + 4) + "┤")
     
     # Print bottom border
-    print("└" + "─" * (week_num + 3) + "┘")
+    print("└" + "─" * (week_num + 4) + "┘")
     print("Legend: █ = First day of month, ▓ = Today, ░ = Regular day")
 
 
