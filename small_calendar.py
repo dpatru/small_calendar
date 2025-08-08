@@ -9,22 +9,10 @@ import sys
 from datetime import datetime, date
 
 
-def create_day_box(day_type="regular"):
-    """Create a bordered box for a day based on its type."""
-    if day_type == "first_day":
-        # Bold/emphasized box for first day of month
-        return "┌─┐"
-    elif day_type == "today":
-        # Special box for today
-        return "┌─┐"
-    else:
-        # Regular box
-        return "┌─┐"
-
 
 def display_yearly_calendar(year, n=1):
     """Display a condensed yearly calendar with 7 rows (days of week) and actual number of weeks."""
-    weekdays = [[] for _ in range(8)]
+    weekdays = [[] for _ in range(7)]
     first_day, today_char, regular_day = ('█', '.', '.')
     first_day = ['X','J','F','M','A','M','J','J','A','S','O','N','D'] 
     # Get current date for highlighting
@@ -34,9 +22,14 @@ def display_yearly_calendar(year, n=1):
     current_day = today_date.day
     cal = calendar.Calendar()
     cal.firstweekday = 6
-    for m in range(1,12*n+1):
+    year_row = ''
+    for m in range(12*n):
         for (y,m2,dm,dw) in cal.itermonthdays4(year+m//12, m%12+1):
+            # print(f"{m}: {y} {m2} {dm} {dw}")
             if m2 != m%12+1: continue
+            # align the year name with the first day of the month
+            if m2 == 1 and dm == 1: 
+                year_row += (len(''.join(weekdays[0])) - len(year_row))*' ' + str(y)
             # print(y,m2,dm,dw)
             v = (today_char if (y==current_year and m==current_month and dm==current_day) \
                  else first_day[m2] if dm==1 \
@@ -57,27 +50,15 @@ def display_yearly_calendar(year, n=1):
     # Day names for the first column (Sunday first)
     day_names = ['S','M','T','W','T','F','S'] # ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
     
-    week_num = len(weekdays[0])
-    # Display the yearly calendar with bordered boxes
-    print(f"\n{year}") # ({week_num} weeks)")
-    
-    # Print top border
-    # print("┌" + "─" * (week_num + 4) + "┐")
+   
+    print(f"\n  {year_row}")
     
     # Print each day row with borders
     for i, day_name in enumerate(day_names):
         row = f"{day_name} {''.join(weekdays[i])}"
         print(row)
         
-        # Print separator line (except for last row)
-        # if i < 6:
-        #     print("├" + "─" * (week_num + 4) + "┤")
     
-    # Print bottom border
-    # print("└" + "─" * (week_num + 4) + "┘")
-    # print(f"Legend: {first_day} = First day of month, {today_char} = Today, {regular_day} = Regular day")
-
-
 def main():
     """Main function to handle command-line arguments and display calendar."""
     parser = argparse.ArgumentParser(
