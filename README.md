@@ -1,45 +1,61 @@
 # Small Calendar
 
-A simple command-line calendar tool written in Python.
+A simple command-line calendar tool written in Python that displays yearly calendars in a condensed format.
 
 ## Features
 
-- Display yearly calendar view (default) - shows entire year in condensed format
-- Display monthly calendar view
-- Navigate between months and years
-- Highlight current date and first day of each month
-- Simple and clean interface
+- **Yearly Calendar View** - Shows entire year in condensed format with days as rows and months as columns
+- **Multi-Year Display** - Display multiple years at once
+- **Vertical/Horizontal Layout** - Choose between horizontal (default) or vertical calendar layout
+- **Flexible Date Highlighting** - Highlight today's date, a specific date, or no date at all
+- **First Day Indicators** - Shows first day of each month with month abbreviations
+- **Week Starting on Sunday** - Follows US calendar convention with weeks starting on Sunday
+- **No External Dependencies** - Uses only Python standard library modules
 
 ## Installation
 
 ```bash
-git clone https://github.com/yourusername/small_calendar.git
+git clone https://github.com/dpatru/small_calendar.git
 cd small_calendar
-pip install -r requirements.txt
 ```
+
+**Note:** No external dependencies required. This project uses only Python standard library modules.
 
 ## Usage
 
 ```bash
-# Show yearly view (default)
+# Show yearly view for current year (default)
 python3 small_calendar.py
 
-# Show specific year
+# Show yearly view for specific year
 python3 small_calendar.py --year 2024
 
-# Show specific month
-python3 small_calendar.py --month 12 --year 2024
+# Show multiple years starting from specific year
+python3 small_calendar.py --year 2024 --number 3
 
-# Show current month
+# Show current year
 python3 small_calendar.py --current
+
+# Display calendar vertically (weeks as rows, weekdays as columns)
+python3 small_calendar.py --vertical
+
+# Highlight today's date
+python3 small_calendar.py --mark-date
+
+# Highlight a specific date
+python3 small_calendar.py --mark-date 2024-06-15
+
+# Combine options
+python3 small_calendar.py --year 2024 --number 2 --vertical --mark-date 2024-12-25
 ```
 
-## Options
+## Command-Line Options
 
-- `--year`: Specify year for yearly view
-- `--month`: Specify month (1-12) for monthly view
-- `--current`: Show current month
-- `--yearly`: Show yearly view (default when no arguments provided)
+- `--year, -y`: Specify start year for calendar display
+- `--number, -n`: Number of years to display (use with --year to specify start year)
+- `--current, -c`: Show current year (explicit)
+- `--vertical, -v`: Display calendar vertically (weeks as rows, weekdays as columns)
+- `--mark-date [DATE]`: Highlight a date (no argument = today's date, with DATE = specific date in YYYY-MM-DD format)
 
 ## Examples
 
@@ -50,12 +66,47 @@ python3 small_calendar.py
 # Show yearly view for 2024
 python3 small_calendar.py --year 2024
 
-# Show December 2024 (monthly view)
-python3 small_calendar.py --month 12 --year 2024
+# Show 3 years starting from 2024
+python3 small_calendar.py --year 2024 --number 3
 
-# Show current month
-python3 small_calendar.py --current
+# Show current year in vertical layout
+python3 small_calendar.py --vertical
+
+# Show 2024-2026 in vertical layout
+python3 small_calendar.py --year 2024 --number 3 --vertical
+
+# Highlight today's date
+python3 small_calendar.py --mark-date
+
+# Highlight Christmas 2024
+python3 small_calendar.py --year 2024 --mark-date 2024-12-25
+
+# Highlight a specific date in current year
+python3 small_calendar.py --mark-date 2024-06-15
+
+# No highlighting (default behavior)
+python3 small_calendar.py --year 2024
 ```
+
+## Calendar Display Format
+
+The calendar displays in a condensed yearly format where:
+- **Rows** represent days of the week (Sunday through Saturday)
+- **Columns** represent months
+- **Symbols** indicate:
+  - `*` - Highlighted date (when using `--mark-date`)
+  - `X`, `J`, `F`, `M`, `A`, `M`, `J`, `J`, `A`, `S`, `O`, `N`, `D` - First day of each month
+  - `.` - Regular days
+
+**Date Highlighting Options:**
+- **No highlighting**: Default behavior when no `--mark-date` is used
+- **Highlight today**: Use `--mark-date` without arguments
+- **Highlight specific date**: Use `--mark-date YYYY-MM-DD`
+
+## Requirements
+
+- Python 3.6+
+- No external packages required (uses only standard library)
 
 ## License
 
