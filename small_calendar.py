@@ -10,19 +10,18 @@ from datetime import datetime, date
 import itertools
 
 
-def display_yearly_calendar(year, n=1, vertical=False):
-    """Display a condensed yearly calendar with 7 rows (days of week) and actual number of weeks."""
-    if vertical:
-        # Vertical display: transpose the horizontal data
-        display_yearly_calendar_horizontal(year, n, vertical=True)
-    else:
-        # Horizontal display: days as rows, months as columns (original behavior)
-        display_yearly_calendar_horizontal(year, n, vertical=False)
+def parse_date(date_string):
+    """Parse a date string in YYYY-MM-DD format."""
+    try:
+        return datetime.strptime(date_string, '%Y-%m-%d').date()
+    except ValueError:
+        raise argparse.ArgumentTypeError(f"Invalid date format: {date_string}. Use YYYY-MM-DD format.")
 
-def display_yearly_calendar_horizontal(year, n=1, vertical=False):
-    """Display a condensed yearly calendar horizontally with 7 rows (days of week) and actual number of weeks."""
+
+def display_yearly_calendar(year, n=1, vertical=False, mark_date=None):
+    """Display a condensed yearly calendar with 7 rows (days of week) and actual number of weeks."""
     weekdays = ['S','M','T','W','T','F','S'] 
-    _, today_char, regular_day = ('█', '.', '.')
+    _, today_char, regular_day = ('█', '*', '.')
     first_day = ['X','J','F','M','A','M','J','J','A','S','O','N','D'] 
     # Get current date for highlighting
     today_date = date.today()
@@ -42,6 +41,8 @@ def display_yearly_calendar_horizontal(year, n=1, vertical=False):
                 elif m2 != m%12+1: # skip months that are not the current month
                     if y == year + n: pass
                     else:continue
+                elif mark_date and y == mark_date.year and m2 == mark_date.month and dm == mark_date.day:
+                    weekstring += today_char
                 elif dm == 1: # first day of the month
                     weekstring += first_day[m2]
                 else:
@@ -61,14 +62,11 @@ def display_yearly_calendar_horizontal(year, n=1, vertical=False):
             # align the year name with the first day of the month, 
             # but only if we are actually processing this month.
             if m2 == 1 and dm == 1 and y < year + n and m2 == m%12+1: 
-                print(f"Adding year {y} to the row")
-                print(f"weekdays[dw]: {weekdays[dw+1]}")
-                print(f"year_row: {year_row}")
                 year_row.append((len(''.join(weekdays[dw+1])) - len(''.join(year_row)))*' ' + str(y) + ' ')
             # print(y,m2,dm,dw)
             v = (' ' if m == 0 and year != y else # empty space if the year is not the current year, occurs when the Jan 1st is not the first day of the week
                  '' if m2 != m%12+1 else # first day of the month is not the first day of the week
-                 today_char if (y==current_year and m==current_month and dm==current_day) else 
+                 today_char if (mark_date and y==mark_date.year and m2==mark_date.month and dm==mark_date.day) else 
                  first_day[m2] if dm==1 else 
                  regular_day)
             weekdays[(dw+1)%7].append(v) # shift by 1 to make Sunday the first day of the week
@@ -94,55 +92,32 @@ def main():
     parser.add_argument(
         "--year", "-y",
         type=int,
-        help="Year (e.g., 2024)"
+        default=datetime.now().year,
+        help="Year (e.g., 2024, default: current year)"
     )
     parser.add_argument(
         "--number", "-n",
         type=int,
-        help="Number of years to display (use with --year to specify start year)"
-    )
-    parser.add_argument(
-        "--current", "-c",
-        action="store_true",
-        help="Show current year (default)"
-    )
-    parser.add_argument(
-        "--yearly",
-        action="store_true",
-        help="Show yearly view (default)"
+        default=1,
+        help="Number of years to display (use with --year to specify start year, default: 1)"
     )
     parser.add_argument(
         "--vertical", "-v",
         action="store_true",
         help="Display calendar vertically (weeks as rows, weekdays as columns)"
     )
+    parser.add_argument(
+        "--mark-date",
+        nargs='?',
+        const=datetime.now().date(),
+        type=parse_date,
+        help="Mark a date for highlighting (default: today's date if no date specified)"
+    )
     
     args = parser.parse_args()
     
-    # Get current date if no arguments provided
-    now = datetime.now()
-    
-    # Determine what to display
-    if args.number is not None:
-        # Show specified number of years
-        if args.year is not None:
-            start_year = args.year
-        else:
-            start_year = now.year
-        
-        display_yearly_calendar(start_year, args.number, args.vertical)
-    elif args.year is not None:
-        # Show yearly view for specific year
-        year = args.year
-        display_yearly_calendar(year, 1, args.vertical)
-    elif args.current:
-        # Show current year
-        year = now.year
-        display_yearly_calendar(year, 1, args.vertical)
-    else:
-        # Default: show yearly view for current year
-        year = now.year
-        display_yearly_calendar(year, 1, args.vertical)
+    # Display the calendar
+    display_yearly_calendar(args.year, args.number, args.vertical, args.mark_date)
     
     try:
         # Display logic is handled above based on arguments
